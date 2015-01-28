@@ -905,7 +905,7 @@ static int divx3_write_header(am_private_t *para, am_packet_t *pkt)
 static int h264_add_header(unsigned char *buf, int size, am_packet_t *pkt)
 {
     // h264 annex-b
-	  if ((buf[0]==0 && buf[1]==0 && buf[2]==0 && buf[3]==1) && size < HDR_BUF_SIZE) {
+    if ((buf[0]==0 && buf[1]==0 && buf[2]==0 && buf[3]==1) && size < HDR_BUF_SIZE) {
         CLog::Log(LOGDEBUG, "add four byte NAL 264 header in stream before header len=%d",size);
         memcpy(pkt->hdr->data, buf, size);
         pkt->hdr->size = size;
@@ -914,6 +914,13 @@ static int h264_add_header(unsigned char *buf, int size, am_packet_t *pkt)
 
     if ((buf[0]==0 && buf[1]==0 && buf[2]==1) && size < HDR_BUF_SIZE) {
         CLog::Log(LOGDEBUG, "add three byte NAL 264 header in stream before header len=%d",size);
+        memcpy(pkt->hdr->data, buf, size);
+        pkt->hdr->size = size;
+        return PLAYER_SUCCESS;
+    }
+
+    if (size < HDR_BUF_SIZE) {
+        CLog::Log(LOGDEBUG, "add non-standard NAL 264 header in stream before header len=%d",size);
         memcpy(pkt->hdr->data, buf, size);
         pkt->hdr->size = size;
         return PLAYER_SUCCESS;
