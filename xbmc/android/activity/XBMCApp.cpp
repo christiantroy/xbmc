@@ -340,9 +340,15 @@ void CXBMCApp::run()
 void CXBMCApp::XBMC_Pause(bool pause)
 {
   android_printf("XBMC_Pause(%s)", pause ? "true" : "false");
+#if defined(TARGET_ANDROID) && (defined(HAS_AMLPLAYER) || defined(HAS_LIBAMCODEC))
+  // Send stop command or Live TV won't stop and shutting off the device with playback on will cause troubles
+  if (pause && g_application.m_pPlayer->IsPlayingVideo())
+    CApplicationMessenger::Get().SendAction(CAction(ACTION_STOP), WINDOW_INVALID, true);
+#else
   // Only send the PAUSE action if we are pausing XBMC and video is currently playing
   if (pause && g_application.m_pPlayer->IsPlayingVideo() && !g_application.m_pPlayer->IsPaused())
     CApplicationMessenger::Get().SendAction(CAction(ACTION_PAUSE), WINDOW_INVALID, true);
+#endif
 }
 
 void CXBMCApp::XBMC_Stop()
