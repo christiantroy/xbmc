@@ -163,6 +163,7 @@ void CAndroidStorageProvider::GetRemovableDrives(VECSOURCES &removableDrives)
         std::string fsStr    = reMount.GetReplaceString("\\3");
         const char* fs    = fsStr.c_str();
 
+#if 0
         // Here we choose which filesystems are approved
         if (strcmp(fs, "fuseblk") == 0 || strcmp(fs, "vfat") == 0
             || strcmp(fs, "ext2") == 0 || strcmp(fs, "ext3") == 0 || strcmp(fs, "ext4") == 0
@@ -180,6 +181,19 @@ void CAndroidStorageProvider::GetRemovableDrives(VECSOURCES &removableDrives)
 
         if(accepted)
           result[device] = mountStr;
+#else
+	// CT: Starting with KitKat the filesystem we only need to look for is fuse
+	if (strcmp(fs, "fuse") == 0)
+	  accepted = true;
+	
+	// CT: ignore emulated storage mount points
+	if (mountStr.find("/emulated") != std::string::npos)
+	  accepted = false;
+
+	// CT: let's use mountStr because device will be "/dev/fuse" for all of them!
+        if(accepted)
+          result[mountStr] = mountStr;
+#endif
       }
       line = strtok_r(NULL, "\n", &saveptr);
     }
@@ -188,6 +202,7 @@ void CAndroidStorageProvider::GetRemovableDrives(VECSOURCES &removableDrives)
 
   for (std::map<std::string, std::string>::const_iterator i = result.begin(); i != result.end(); ++i)
   {
+    
     CMediaSource share;
     share.strPath = unescape(i->second);
     share.strName = URIUtils::GetFileName(share.strPath);
