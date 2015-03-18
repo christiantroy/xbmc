@@ -201,7 +201,6 @@ void CAndroidStorageProvider::GetRemovableDrives(VECSOURCES &removableDrives)
 
   for (std::map<std::string, std::string>::const_iterator i = result.begin(); i != result.end(); ++i)
   {
-    
     CMediaSource share;
     share.strPath = unescape(i->second);
     share.strName = URIUtils::GetFileName(share.strPath);
