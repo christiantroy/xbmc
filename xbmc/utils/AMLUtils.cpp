@@ -286,6 +286,8 @@ bool aml_wired_present()
 
 void aml_permissions()
 {
+  return;
+#if 0
   if (!aml_present())
     return;
   
@@ -311,6 +313,7 @@ void aml_permissions()
     system("su -c chmod 666 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor");
     CLog::Log(LOGINFO, "aml_permissions: permissions changed");
   }
+#endif
 }
 
 enum AML_DEVICE_TYPE aml_get_device_type()
