@@ -69,7 +69,7 @@ bool CGUIDialogBusy::WaitOnEvent(CEvent &event, unsigned int displaytime /* = 10
     {
       dialog->Open();
 
-      while(!event.WaitMSec(1))
+      while(!event.WaitMSec(100))
       {
         g_windowManager.ProcessRenderLoop(false);
         if (allowCancel && dialog->IsCanceled())
