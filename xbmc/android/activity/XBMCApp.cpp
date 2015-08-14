@@ -157,6 +157,7 @@ void CXBMCApp::onResume()
   intentFilter.addAction("android.intent.action.BATTERY_CHANGED");
   intentFilter.addAction("android.intent.action.DREAMING_STOPPED");
   intentFilter.addAction("android.intent.action.SCREEN_ON");
+  intentFilter.addAction("android.intent.action.SCREEN_OFF");
   registerReceiver(*this, intentFilter);
 
   if (!g_application.IsInScreenSaver())
@@ -737,11 +738,14 @@ void CXBMCApp::onReceive(CJNIIntent intent)
 {
   std::string action = intent.getAction();
   android_printf("CXBMCApp::onReceive Got intent. Action: %s", action.c_str());
-  if (action == "android.intent.action.BATTERY_CHANGED")
+  if (action == "android.intent.action.BATTERY_CHANGED") {
     m_batteryLevel = intent.getIntExtra("level",-1);
-  else if (action == "android.intent.action.DREAMING_STOPPED" || action == "android.intent.action.SCREEN_ON")
+  } else if (action == "android.intent.action.DREAMING_STOPPED" || action == "android.intent.action.SCREEN_ON") {
     if (HasFocus())
       g_application.WakeUpScreenSaverAndDPMS();
+  } else if (action == "android.intent.action.SCREEN_OFF") {
+	XBMC_Pause(true);
+  }
 }
 
 void CXBMCApp::onNewIntent(CJNIIntent intent)
