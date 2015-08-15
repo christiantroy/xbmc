@@ -213,6 +213,8 @@ CDVDVideoCodec* CDVDFactoryCodec::CreateVideoCodec(CDVDStreamInfo &hint, const C
   {
     switch(hint.codec)
     {
+      // CT: use amlcodec for SD content as well, I have noticed that SD XviD played at 24fps stutter otherwise
+      /*
       case AV_CODEC_ID_MPEG4:
       case AV_CODEC_ID_MSMPEG4V2:
       case AV_CODEC_ID_MSMPEG4V3:
@@ -220,6 +222,7 @@ CDVDVideoCodec* CDVDFactoryCodec::CreateVideoCodec(CDVDStreamInfo &hint, const C
         // not supported and can easily be soft-decoded
         if (hint.width <= 800)
           break;
+      */
       default:
         if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
     }
