@@ -291,6 +291,21 @@ void aml_probe_hdmi_audio()
   }
 }
 
+bool aml_spdif_passthrough_enabled()
+{
+  if(!SysfsUtils::Has("/sys/devices/platform/spdif-dit.0/spdif_mute"))
+  {
+    return false;
+  }
+  
+  std::string valstr;
+  if(SysfsUtils::GetString("/sys/devices/platform/spdif-dit.0/spdif_mute", valstr) != 0)
+  {
+    return false;
+  }
+  return (valstr.find("spdif_unmute") != std::string::npos);
+}
+
 int aml_axis_value(AML_DISPLAY_AXIS_PARAM param)
 {
   std::string axis;
