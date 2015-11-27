@@ -32,6 +32,7 @@
 #include "utils/StringUtils.h"
 #include "utils/AMLUtils.h"
 #include "guilib/gui3d.h"
+#include "settings/Settings.h"
 
 bool aml_present()
 {
@@ -304,6 +305,14 @@ bool aml_spdif_passthrough_enabled()
     return false;
   }
   return (valstr.find("spdif_unmute") != std::string::npos);
+}
+
+bool aml_supports_8ch_pcm()
+{
+	return (aml_present()
+    &&  aml_get_device_type() != AML_DEVICE_TYPE_UNKNOWN
+    &&  aml_get_device_type() >= AML_DEVICE_TYPE_M8M2
+    && CSettings::Get().GetBool("audiooutput.passthrough"));
 }
 
 int aml_axis_value(AML_DISPLAY_AXIS_PARAM param)

@@ -223,6 +223,16 @@ bool CAESinkAUDIOTRACK::Initialize(AEAudioFormat &format, std::string &device)
 #endif
 
   int atChannelMask = AEChannelMapToAUDIOTRACKChannelMask(m_format.m_channelLayout);
+  
+#if defined(HAS_LIBAMCODEC)
+  // CT: nasty hack for having (partially) working 7.1 DD+ that is detected as 6 channels and hang the machine
+  if (aml_supports_8ch_pcm()
+			&& m_format.m_dataFormat == 30
+			&& atChannelMask == 252) {
+		CLog::Log(LOGDEBUG, "AML: workaround for DD+ 7.1 track");
+		atChannelMask = 6396;
+	}
+#endif
 
   m_format.m_sampleRate     = CJNIAudioTrack::getNativeOutputSampleRate(CJNIAudioManager::STREAM_MUSIC);
   m_format.m_dataFormat     = AE_FMT_S16LE;
