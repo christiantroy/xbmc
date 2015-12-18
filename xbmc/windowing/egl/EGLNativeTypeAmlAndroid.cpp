@@ -155,7 +155,11 @@ bool CEGLNativeTypeAmlAndroid::SetNativeResolution(const RESOLUTION_INFO &res)
           return SetDisplayResolution("4k2ksmpte");
           break;
         default:
-          return SetDisplayResolution("1080p24hz");
+	    if (aml_get_device_type() == AML_DEVICE_TYPE_M8M2) {
+		return SetDisplayResolution("1080p23hz");
+	    } else {
+		return SetDisplayResolution("1080p24hz");
+	    }
           break;
       }
       break;
