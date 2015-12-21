@@ -16602,6 +16602,21 @@ msgstr ""
 
 #empty strings from id 37046 to 38009
 
+#: system/settings/settings.xml
+msgctxt "#38007"
+msgid "Boost centre channel when downmixing"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#38008"
+msgid "Increase this value to make the dialogue louder compared to background sounds when downmixing multichannel audio"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#38009"
+msgid "%i dB"
+msgstr ""
+
 #: system/settings/rbp.xml
 msgctxt "#38010"
 msgid "GPU accelerated"
