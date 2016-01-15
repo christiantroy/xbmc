@@ -9,6 +9,8 @@ import android.view.View;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 
+import org.xbmc.kodi_wetek_mod.R;
+
 public class Main extends NativeActivity 
 {
   private XBMCSettingsContentObserver mSettingsContentObserver;

@@ -49,6 +49,8 @@ import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.os.Environment;
 
+import org.xbmc.kodi_wetek_mod.R;
+
 public class Splash extends Activity {
 
   private static final int Uninitialized = 0;
