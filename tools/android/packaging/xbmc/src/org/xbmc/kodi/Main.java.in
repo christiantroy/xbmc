@@ -14,7 +14,9 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import org.xbmc.@APP_NAME_LC@.XBMCVideoView;
 
-public class Main extends NativeActivity
+import org.xbmc.kodi_wetek_mod.R;
+
+public class Main extends NativeActivity 
 {
   private static final String TAG = "@APP_NAME_LC@";
 
