@@ -198,6 +198,18 @@ void aml_set_audio_passthrough(bool passthrough)
   SysfsUtils::SetInt("/sys/class/audiodsp/digital_raw", passthrough ? 2:0);
 }
 
+int aml_get_digital_raw()
+{
+  int val;
+  SysfsUtils::GetInt("/sys/class/audiodsp/digital_raw", val);
+  return val;
+}
+
+void aml_set_digital_raw(int val)
+{
+  SysfsUtils::SetInt("/sys/class/audiodsp/digital_raw", val);
+}
+
 void aml_probe_hdmi_audio()
 {
   // Audio {format, channel, freq, cce}
