@@ -28,6 +28,12 @@ class CJNIAudioFormat
     static void PopulateStaticFields();
 
     static int ENCODING_PCM_16BIT;
+    static int ENCODING_PCM_FLOAT;
+    static int ENCODING_AC3;
+    static int ENCODING_E_AC3;
+    static int ENCODING_DTS;
+    static int ENCODING_DTS_HD;
+    static int ENCODING_DOLBY_TRUEHD;
 
     static int CHANNEL_OUT_STEREO;
     static int CHANNEL_OUT_5POINT1;
@@ -45,6 +51,11 @@ class CJNIAudioFormat
     static int CHANNEL_OUT_BACK_RIGHT;
 
     static int CHANNEL_INVALID;
+    
+    // AML
+    static int ENCODING_DTSHD;
+    static int ENCODING_DTSHD_MA;
+    static int ENCODING_TRUEHD;
 };
 
 };
