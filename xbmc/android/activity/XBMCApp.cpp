@@ -107,7 +107,7 @@ std::vector<androidPackage> CXBMCApp::m_applications;
 
 CXBMCApp::CXBMCApp(ANativeActivity* nativeActivity)
   : CJNIMainActivity(nativeActivity)
-  , CJNIBroadcastReceiver("org/xbmc/kodi/XBMCBroadcastReceiver")
+  , CJNIBroadcastReceiver("com/wetek/mediaplayer/XBMCBroadcastReceiver")
 {
   m_xbmcappinstance = this;
   m_activity = nativeActivity;
@@ -299,7 +299,9 @@ bool CXBMCApp::EnableWakeLock(bool on)
   {
     std::string appName = CCompileInfo::GetAppName();
     StringUtils::ToLower(appName);
-    std::string className = "org.xbmc." + appName;
+    std::string pkgRoot = CCompileInfo::GetPkgRoot();
+    StringUtils::ToLower(pkgRoot);
+    std::string className = pkgRoot + "." + appName;
     // SCREEN_BRIGHT_WAKE_LOCK is marked as deprecated but there is no real alternatives for now
     m_wakeLock = new CJNIWakeLock(CJNIPowerManager(getSystemService("power")).newWakeLock(CJNIPowerManager::SCREEN_BRIGHT_WAKE_LOCK, className.c_str()));
     if (m_wakeLock)
