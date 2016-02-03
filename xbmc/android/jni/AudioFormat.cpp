@@ -25,6 +25,12 @@
 using namespace jni;
 
 int CJNIAudioFormat::ENCODING_PCM_16BIT = 0x00000002;
+int CJNIAudioFormat::ENCODING_PCM_FLOAT = 0x00000004;
+int CJNIAudioFormat::ENCODING_AC3       = 0x00000005;
+int CJNIAudioFormat::ENCODING_E_AC3     = 0x00000006;
+int CJNIAudioFormat::ENCODING_DTS       = 0x00000007;
+int CJNIAudioFormat::ENCODING_DTS_HD    = 0x00000008;
+int CJNIAudioFormat::ENCODING_DOLBY_TRUEHD    = 0x00000009;
 
 int CJNIAudioFormat::CHANNEL_OUT_STEREO  = 0x0000000c;
 int CJNIAudioFormat::CHANNEL_OUT_5POINT1 = 0x000000fc;
@@ -42,6 +48,11 @@ int CJNIAudioFormat::CHANNEL_OUT_BACK_CENTER           = 0x00000400;
 int CJNIAudioFormat::CHANNEL_OUT_BACK_RIGHT            = 0x00000080;
 
 int CJNIAudioFormat::CHANNEL_INVALID                   = 0x00000000;
+
+// AML
+int CJNIAudioFormat::ENCODING_DTSHD       = -1;
+int CJNIAudioFormat::ENCODING_DTSHD_MA    = -1;
+int CJNIAudioFormat::ENCODING_TRUEHD      = -1;
 
 void CJNIAudioFormat::PopulateStaticFields()
 {
@@ -64,12 +75,44 @@ void CJNIAudioFormat::PopulateStaticFields()
       CJNIAudioFormat::CHANNEL_OUT_BACK_CENTER = get_static_field<int>(c, "CHANNEL_OUT_BACK_CENTER");
       CJNIAudioFormat::CHANNEL_OUT_BACK_RIGHT = get_static_field<int>(c, "CHANNEL_OUT_BACK_RIGHT");
       CJNIAudioFormat::CHANNEL_INVALID = get_static_field<int>(c, "CHANNEL_INVALID");
+
       if (sdk >= 21)
       {
         CJNIAudioFormat::CHANNEL_OUT_SIDE_LEFT = get_static_field<int>(c, "CHANNEL_OUT_SIDE_LEFT");
         CJNIAudioFormat::CHANNEL_OUT_SIDE_RIGHT = get_static_field<int>(c, "CHANNEL_OUT_SIDE_RIGHT");
+
+        CJNIAudioFormat::ENCODING_PCM_FLOAT = get_static_field<int>(c, "ENCODING_PCM_FLOAT");
+        CJNIAudioFormat::ENCODING_AC3 = get_static_field<int>(c, "ENCODING_AC3");
+        CJNIAudioFormat::ENCODING_E_AC3 = get_static_field<int>(c, "ENCODING_E_AC3");
+
+        if (sdk >= 23)
+        {
+          CJNIAudioFormat::ENCODING_DTS = get_static_field<int>(c, "ENCODING_DTS");
+          CJNIAudioFormat::ENCODING_DTS_HD = get_static_field<int>(c, "ENCODING_DTS_HD");
+        }
       }
     }
+
+    jfieldID id;
+    
+    // AML specific
+    id = get_static_field_id<jclass>(c, "ENCODING_TRUEHD", "I");
+    if (id != NULL)
+	CJNIAudioFormat::ENCODING_TRUEHD = get_static_field<int>(c, "ENCODING_TRUEHD");
+    else
+	xbmc_jnienv()->ExceptionClear();
+    
+    id = get_static_field_id<jclass>(c, "ENCODING_DTSHD", "I");
+    if (id != NULL)
+	CJNIAudioFormat::ENCODING_DTSHD = get_static_field<int>(c, "ENCODING_DTSHD");
+    else
+	xbmc_jnienv()->ExceptionClear();
+    
+    id = get_static_field_id<jclass>(c, "ENCODING_DTSHD_MA", "I");
+    if (id != NULL)
+	CJNIAudioFormat::ENCODING_DTSHD_MA = get_static_field<int>(c, "ENCODING_DTSHD_MA");
+    else
+	xbmc_jnienv()->ExceptionClear();
   }
 }
 

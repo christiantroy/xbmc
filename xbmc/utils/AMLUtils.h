@@ -49,5 +49,7 @@ bool aml_support_hevc();
 bool aml_support_hevc_4k2k();
 bool aml_support_h264_4k2k();
 void aml_set_audio_passthrough(bool passthrough);
+int aml_get_digital_raw();
+void aml_set_digital_raw(int val);
 bool aml_IsHdmiConnected();
 bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res);
