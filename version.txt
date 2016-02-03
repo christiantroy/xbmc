@@ -1,6 +1,7 @@
-APP_NAME Kodi
+APP_NAME MediaPlayer
+APP_PACKAGE_ROOT com.wetek
 COMPANY_NAME XBMC-Foundation
-WEBSITE http://kodi.tv
+WEBSITE http://www.wetek.com
 VERSION_MAJOR 16
 VERSION_MINOR 0
 VERSION_TAG RC3
