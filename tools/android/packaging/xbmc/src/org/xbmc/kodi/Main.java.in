@@ -1,4 +1,4 @@
-package org.xbmc.@APP_NAME_LC@;
+package com.wetek.@APP_NAME_LC@;
 
 import android.app.NativeActivity;
 import android.content.ComponentName;
@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Handler;
-import org.xbmc.@APP_NAME_LC@.XBMCVideoView;
+import com.wetek.@APP_NAME_LC@.XBMCVideoView;
 
 public class Main extends NativeActivity
 {
