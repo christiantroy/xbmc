@@ -151,8 +151,6 @@ void CGUIWindowSystemInfo::FrameMove()
 #if defined(__arm__) && defined(TARGET_LINUX)
     SET_CONTROL_LABEL(i++, g_sysinfo.GetCPUBogoMips());
     SET_CONTROL_LABEL(i++, g_sysinfo.GetCPUHardware());
-    SET_CONTROL_LABEL(i++, g_sysinfo.GetCPURevision());
-    SET_CONTROL_LABEL(i++, g_sysinfo.GetCPUSerial());
 #endif
     SetControlLabel(i++, "%s %s", 22011, SYSTEM_CPU_TEMPERATURE);
 #if !defined(__arm__) || defined(TARGET_RASPBERRY_PI)
