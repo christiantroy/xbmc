@@ -29,12 +29,14 @@
 #include "utils/AMLUtils.h"
 
 bool CEGLNativeTypeAmlAndroid::m_isWritable = false;
+bool CEGLNativeTypeAmlAndroid::m_needsNewResolutions = false;
 
 bool CEGLNativeTypeAmlAndroid::CheckCompatibility()
 {
   if (aml_present())
   {
     m_isWritable = false;
+    m_needsNewResolutions = aml_support_hevc_10bit();
     if (SysfsUtils::HasRW("/sys/class/display/mode"))
       m_isWritable = true;
     else
@@ -103,14 +105,18 @@ bool CEGLNativeTypeAmlAndroid::SetNativeResolution(const RESOLUTION_INFO &res)
           }
           break;
         case 1280:
-          return SetDisplayResolution("720p");
+          return m_needsNewResolutions ? SetDisplayResolution("720p60hz") : SetDisplayResolution("720p");
           break;
         case 1920:
           if (res.dwFlags & D3DPRESENTFLAG_INTERLACED)
-            return SetDisplayResolution("1080i");
+            return m_needsNewResolutions ? SetDisplayResolution("1080i60hz") : SetDisplayResolution("1080i");
           else
-            return SetDisplayResolution("1080p");
+            return m_needsNewResolutions ? SetDisplayResolution("1080p60hz") : SetDisplayResolution("1080p");
           break;
+	case 3840:
+	    if (m_needsNewResolutions)
+		return SetDisplayResolution("2160p60hz420");
+	    break;
       }
       break;
     case 599:
@@ -136,13 +142,17 @@ bool CEGLNativeTypeAmlAndroid::SetNativeResolution(const RESOLUTION_INFO &res)
           else
             return SetDisplayResolution("1080p50hz");
           break;
+	case 3840:
+	    if (m_needsNewResolutions)
+		return SetDisplayResolution("2160p50hz420");
+	    break;
       }
       break;
     case 300:
       switch(res.iScreenWidth)
       {
         case 3840:
-          return SetDisplayResolution("4k2k30hz");
+          return m_needsNewResolutions ? SetDisplayResolution("2160p30hz") : SetDisplayResolution("4k2k30hz");
           break;
         default:
           return SetDisplayResolution("1080p30hz");
@@ -164,7 +174,7 @@ bool CEGLNativeTypeAmlAndroid::SetNativeResolution(const RESOLUTION_INFO &res)
       switch(res.iScreenWidth)
       {
         case 3840:
-          return SetDisplayResolution("4k2k25hz");
+          return m_needsNewResolutions ? SetDisplayResolution("2160p25hz") : SetDisplayResolution("4k2k25hz");
           break;
         default:
           return SetDisplayResolution("1080p25hz");
@@ -175,10 +185,10 @@ bool CEGLNativeTypeAmlAndroid::SetNativeResolution(const RESOLUTION_INFO &res)
       switch(res.iScreenWidth)
       {
         case 3840:
-          return SetDisplayResolution("4k2k24hz");
+          return m_needsNewResolutions ? SetDisplayResolution("2160p24hz") : SetDisplayResolution("4k2k24hz");
           break;
         case 4096:
-          return SetDisplayResolution("4k2ksmpte");
+          return m_needsNewResolutions ? SetDisplayResolution("smpte24hz") : SetDisplayResolution("4k2ksmpte");
           break;
         default:
           return SetDisplayResolution("1080p24hz");
