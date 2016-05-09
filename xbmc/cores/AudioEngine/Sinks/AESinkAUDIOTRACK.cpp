@@ -196,7 +196,6 @@ bool CAESinkAUDIOTRACK::Initialize(AEAudioFormat &format, std::string &device)
   m_volume      = -1;
   m_smoothedDelayCount = 0;
   m_smoothedDelayVec.clear();
-  int frame_rate_automation = 1;
 
   CLog::Log(LOGDEBUG, "CAESinkAUDIOTRACK::Initialize requested: %p, sampleRate %u; format: %s(%d); channels: %d", this, format.m_sampleRate, CAEUtil::DataFormatToStr(format.m_dataFormat), format.m_dataFormat, format.m_channelLayout.Count());
 
@@ -311,7 +310,7 @@ bool CAESinkAUDIOTRACK::Initialize(AEAudioFormat &format, std::string &device)
           m_sink_sampleRate       = 192000;
 	  // On S9xx there is no need to disable Amlogic framerate automation when using HD audio bitstream
 	  if (!aml_support_hevc_10bit())
-	    frame_rate_automation = 0;
+	    aml_set_framerate_automation(0);
         }
         else
           m_format.m_dataFormat   = AE_FMT_S16LE;
@@ -324,7 +323,7 @@ bool CAESinkAUDIOTRACK::Initialize(AEAudioFormat &format, std::string &device)
           m_sink_sampleRate       = 192000;
 	  // On S9xx there is no need to disable Amlogic framerate automation when using HD audio bitstream
 	  if (!aml_support_hevc_10bit())
-	    frame_rate_automation = 0;
+	    aml_set_framerate_automation(0);
         }
         else
           m_format.m_dataFormat   = AE_FMT_S16LE;
@@ -351,11 +350,6 @@ bool CAESinkAUDIOTRACK::Initialize(AEAudioFormat &format, std::string &device)
     m_format.m_dataFormat     = AE_FMT_S16LE;
   }
   
-#if defined(HAS_LIBAMCODEC)
-  if (aml_present())
-    aml_set_framerate_automation(frame_rate_automation);
-#endif
-
   int atChannelMask = AEChannelMapToAUDIOTRACKChannelMask(m_format.m_channelLayout);
   m_format.m_channelLayout  = AUDIOTRACKChannelMaskToAEChannelMap(atChannelMask);
 
@@ -448,7 +442,7 @@ void CAESinkAUDIOTRACK::Deinitialize()
   
 #if defined(HAS_LIBAMCODEC)
   // Re-enable Amlogic framerate automation
-  if (aml_present())
+  if (aml_present() && !aml_support_hevc_10bit())
     aml_set_framerate_automation(1);
 #endif
 
