@@ -209,21 +209,22 @@ CDVDVideoCodec* CDVDFactoryCodec::CreateVideoCodec(CDVDStreamInfo &hint, const C
   }
 
 #if defined(HAS_LIBAMCODEC)
-  // amcodec can handle dvd playback.
+  // amcodec has issues with some mpeg4 / XVid files, allow user to software decode them.
   if (!hint.software && CSettings::GetInstance().GetBool(CSettings::SETTING_VIDEOPLAYER_USEAMCODEC))
   {
     switch(hint.codec)
     {
-      // CT: use amlcodec for SD content as well, I have noticed that SD XviD played at 24fps stutter otherwise
-      /*
       case AV_CODEC_ID_MPEG4:
       case AV_CODEC_ID_MSMPEG4V2:
       case AV_CODEC_ID_MSMPEG4V3:
-        // Avoid h/w decoder for SD; Those files might use features
-        // not supported and can easily be soft-decoded
-        if (hint.width <= 800)
-          break;
-      */
+       if (hint.width > CSettings::GetInstance().GetInt(CSettings::SETTING_VIDEOPLAYER_ACCELMPEG4))
+          if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
+        break;
+      case AV_CODEC_ID_MPEG1VIDEO:
+      case AV_CODEC_ID_MPEG2VIDEO:
+        if (hint.width >CSettings::GetInstance().GetInt(CSettings::SETTING_VIDEOPLAYER_ACCELMPEG2))
+          if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
+        break;
       default:
         if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
     }
